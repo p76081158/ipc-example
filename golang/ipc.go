@@ -41,6 +41,7 @@ func main() {
 		rdy_channels[i] = make(chan string)
 		out_channels[i] = make(chan string)
 	}
+	pipes.CreateFlie(pipeFile)
 
 	// create Servers and Clients goroutines ( T = 0 )
 	go socket.TCPServer(":7070", mess)
