@@ -40,6 +40,7 @@ func calcMode(nums []int) ([]int, bool) {
 			max  = freq
 		}
 	}
+	// Pigeonhole principle
 	if max > (len(nums) / len(countMap) + 1) {
 		// single mode value
 		return append(ans, mode), true
