@@ -29,12 +29,11 @@ func calcMode(nums []int) ([]int, bool) {
 	countMap := make(map[int]int)
 	max      := 0
 	mode     := 0
-	freq     := 0
 	for _, key := range nums {
 		countMap[key] += 1
 	}
 	for _, key := range nums {
-		freq = countMap[key]
+		freq := countMap[key]
 		if freq > max {
 			mode = key
 			max  = freq
