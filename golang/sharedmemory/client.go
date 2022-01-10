@@ -11,31 +11,52 @@ func Client(shared <-chan string, ready chan<- string, fin chan<- string) {
 	result := <-shared
 
 	// get mode value
-	nums   := toNums(result)
-	mode   := calcMode(nums)
+	nums        := toNums(result)
+	mode, exist := calcMode(nums)
 
 	// print result and tell main process client is finished
-	fmt.Println("Mode is", mode)
+	if exist {
+		fmt.Println("Mode is", mode)
+	}else {
+		fmt.Println("Mode is not existed")
+	}
 	fin <- "Client3 is finished"
 }
 
 // calculate mode value
-func calcMode(nums []int) int {
+func calcMode(nums []int) ([]int, bool) {
+	var ans []int
 	countMap := make(map[int]int)
 	max      := 0
 	mode     := 0
-
+	freq     := 0
 	for _, key := range nums {
 		countMap[key] += 1
 	}
 	for _, key := range nums {
-		freq := countMap[key]
+		freq = countMap[key]
 		if freq > max {
 			mode = key
 			max  = freq
 		}
 	}
-	return mode
+	if max > (len(nums) / len(countMap) + 1) {
+		// single mode value
+		return append(ans, mode), true
+	} else {
+		if max == (len(nums) / len(countMap)) && (len(nums) % len(countMap)) == 0 {
+			// mode value not existed
+			return ans, false
+		} else {
+			// single or multiple mode values
+			for key, value := range countMap {
+				if max == value {
+					ans = append(ans, key)
+				}
+			}
+			return ans, true
+		}
+	}
 }
 
 // split string to nums
