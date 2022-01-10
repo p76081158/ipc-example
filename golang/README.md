@@ -209,11 +209,15 @@ func Client(shared <-chan string, ready chan<- string, fin chan<- string) {
     result := <-shared
     
     // get mode value
-    nums   := toNums(result)
-    mode   := calcMode(nums)
+    nums        := toNums(result)
+    mode, exist := calcMode(nums)
     
     // print result and tell main process client is finished
-    fmt.Println("Mode is", mode)
+    if exist {
+        fmt.Println("Mode is", mode)
+    }else {
+        fmt.Println("Mode is not existed")
+    }
     fin <- "Client3 is finished"
 }
 ```
